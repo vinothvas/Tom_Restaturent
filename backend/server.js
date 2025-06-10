@@ -4,25 +4,34 @@ import cors from "cors";
 import connectDB from "./config/mongodb.js";
 import useRouter from "./routes/userRoute.js";
 import productRouter from "./routes/productRoute.js";
-import { connect } from "mongoose";
 import connectCloudinary from "./config/cloudinary.js";
 
 const app = express();
-const port = process.env.PORT || 4000;
-connectDB();
-connectCloudinary();
+const port = process.env.PORT;
 
-app.use(express.json());
-app.use(cors());
+const startServer = async () => {
+  try {
+    await connectDB(); // Wait for DB connection
+    connectCloudinary();
 
-//api endpoints
-app.use("/api/user", useRouter);
-app.use("/api/product", productRouter);
+    app.use(express.json());
+    app.use(cors());
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+    // API routes
+    app.use("/api/user", useRouter);
+    app.use("/api/product", productRouter);
 
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
-});
+    app.get("/", (req, res) => {
+      res.send("Hello World!");
+    });
+
+    // Start server AFTER DB connection is successful
+    app.listen(port, () => {
+      console.log(`✅ Server listening at http://localhost:${port}`);
+    });
+  } catch (err) {
+    console.error("❌ Failed to start server:", err.message);
+  }
+};
+
+startServer();
