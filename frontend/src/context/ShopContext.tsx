@@ -32,8 +32,7 @@ interface ShopContextProviderProps {
 }
 
 export const ShopContextProvider = ({ children }: ShopContextProviderProps) => {
-  const backendUrl =
-    process.env.VITE_BACKEND_URL; // Default to localhost if not set
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL; // Default to localhost if not set
 
   const [foods, setFoods] = useState<Product[]>([]);
 
