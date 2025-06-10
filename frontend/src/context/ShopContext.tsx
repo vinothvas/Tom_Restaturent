@@ -22,7 +22,7 @@ interface Product {
 
 interface ShopContextType {
   foods: Product[];
-  backendUrl: string;
+  backendUrl: any;
 }
 
 const ShopContext = createContext<ShopContextType | undefined>(undefined);
@@ -33,7 +33,7 @@ interface ShopContextProviderProps {
 
 export const ShopContextProvider = ({ children }: ShopContextProviderProps) => {
   const backendUrl =
-    process.env.VITE_BACKEND_URL || "http://localhost:4000"; // Default to localhost if not set
+    process.env.VITE_BACKEND_URL; // Default to localhost if not set
 
   const [foods, setFoods] = useState<Product[]>([]);
 
